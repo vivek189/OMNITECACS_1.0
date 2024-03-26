@@ -1,0 +1,45 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body xmlns:ns1="http://service.gasws.dpw.com/">
+        <ns1:getTokenDetails>
+            <ns1:tokenReqType>
+                <ns1:regPlace>DXB</ns1:regPlace>
+                <ns1:rfIdNo></ns1:rfIdNo>
+                <ns1:truckNo>125</ns1:truckNo>
+                <ns1:terminalId>T1</ns1:terminalId>
+                <ns1:userCredentials>
+                    <ns1:password>XNmrh1j+uKQ=</ns1:password>
+                    <ns1:username>CAMCOTST</ns1:username>
+                </ns1:userCredentials>
+            </ns1:tokenReqType>
+        </ns1:getTokenDetails>
+    </soap:Body>
+</soap:Envelope>
+
+
+
+
+
+
+
+
+<env:Envelope
+  xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ns0="http://service.gasws.dpw.com/">
+ <env:Body>
+  <ns0:getTokenDetailsResponse>
+   <ns0:return>
+    <ns0:exception>
+     <ns0:technicalException
+       xsi:nil="1"/>
+     <ns0:businessException>
+      <ns0:message>Token Details Not Found</ns0:message>
+      <ns0:id>2</ns0:id>
+     </ns0:businessException>
+    </ns0:exception>
+    <ns0:errorMessage>Invalid Truck: Either Truck is not active or insurance is expired. RFID# <> Truck# <125> Reg Place <DXB>.</ns0:errorMessage>
+   </ns0:return>
+  </ns0:getTokenDetailsResponse>
+ </env:Body>
+</env:Envelope>
