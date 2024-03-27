@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace CASSDPWORLD
 {
@@ -108,9 +109,52 @@ namespace CASSDPWORLD
             TxtResponse.Text= responseXml;
         }
 
+
+        private void PAARSEGETTOKENRESPONSE(string RESPONSEXML)
+        {
+            try
+            {
+                if(RESPONSEXML.Contains("CASSERROR"))
+                {
+                    TxtResponse.Text = "Error Message: INTERNAL API RELATED ISSUE";
+                    return;
+                }
+                var doc = XDocument.Parse(RESPONSEXML);
+                XNamespace ns0 = "http://service.gasws.dpw.com/";
+                var errorMessage = doc.Descendants(ns0 + "errorMessage")
+                    .Select(x => x.Value)
+                    .FirstOrDefault();
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    TxtResponse.Text= "Error Message: " + errorMessage;
+                }
+                else
+                {
+                    var tokenDetails = doc.Descendants(ns0 + "tokenDetails")
+                        .Select(x => new
+                        {
+                            TokenNo = x.Element(ns0 + "tokenNo")?.Value,
+                            TerminalId = x.Element(ns0 + "terminalId")?.Value,
+                            ContainerNo = x.Element(ns0 + "containerNo")?.Value,
+                            StartTime = x.Element(ns0 + "startTime")?.Value,
+                            EndTime = x.Element(ns0 + "endTime")?.Value
+                        })
+                        .ToList();
+
+                    foreach (var detail in tokenDetails)
+                    {
+                        TxtResponse.Text+=($"TokenNo: {detail.TokenNo}, TerminalId: {detail.TerminalId}, ContainerNo: {detail.ContainerNo}, StartTime: {detail.StartTime}, EndTime: {detail.EndTime}");
+                    }
+                }
+            }
+            catch (Exception ex) { }
+        }
+
         private void BtnGetEIRLocation_Click(object sender, EventArgs e)
         {
             GETEIRLOCATIONDETAILS(TxtEIRregPlace.Text, TxtEILaneID.Text, TxtEITRUCKNO.Text, TxtEIPortCode.Text, TxtEIPortCode.Text, TxtEITokenNo.Text);
         }
+
+        
     }
 }
