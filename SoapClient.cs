@@ -17,8 +17,8 @@ namespace CASSDPWORLD.APICLASS
             string PostRequestStr = string.Empty;
             try
             {
-                
-                string URL = "http://jxodevap.dpworld.ae:7780/gasws/GateAutomationServiceSoapHttpPort/getEirLocationDetails";
+
+                string URL = "http://jxodevap.dpworld.ae:7780/gasws/GateAutomationServiceSoapHttpPort";
                 string xmlTemplate = @"
 <soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
     <soap:Body xmlns:ns1=""http://service.gasws.dpw.com/"">
@@ -40,8 +40,9 @@ namespace CASSDPWORLD.APICLASS
                 string requestXml = string.Format(xmlTemplate, regPlace, rfIdNo, truckNo, terminalId, password, username);
                 var client = new RestClient();
                 var request = new RestRequest(URL, Method.Post);
+                request.AddHeader("Content-Type", "text/xml");
                 request.Timeout = 10000;
-                request.AddParameter("application/xml", requestXml, ParameterType.RequestBody);
+                request.AddParameter("text/xml", requestXml, ParameterType.RequestBody);
                 var response = client.Execute(request);
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -63,8 +64,8 @@ namespace CASSDPWORLD.APICLASS
             }
             catch (Exception ex)
             {
-                ERRORLOG EL= new ERRORLOG();
-                EL.WriteToFile("GETTOKENDETAILS :" + ex.Message);
+                //ERRORLOG EL = new ERRORLOG();
+                //EL.WriteToFile("GETTOKENDETAILS :" + ex.Message);
             }
             return PostRequestStr;
         }
